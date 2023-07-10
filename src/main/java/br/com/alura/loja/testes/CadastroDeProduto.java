@@ -23,9 +23,15 @@ public class CadastroDeProduto {
 		CategoriaDao categoriaDao = new CategoriaDao(em);
 		
 		em.getTransaction().begin();
+		
 		categoriaDao.cadastrar(celulares);
 		produtoDao.cadastrar(celular);
+		celulares.setNome("Nokia");
+		
+		
 		em.getTransaction().commit();
+		categoriaDao.atualiza(celulares);
+		celulares.setNome("Xiaomis");
 		em.close();
 	}
 
