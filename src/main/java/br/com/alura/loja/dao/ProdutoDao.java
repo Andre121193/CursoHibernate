@@ -35,5 +35,19 @@ public class ProdutoDao {
 		String jpql = "SELECT p FROM Produto p"; // Observar que o produto se refere a entidade e nao a tabela 
 		return em.createQuery(jpql, Produto.class).getResultList();
 	}
+	
+	public List<Produto> buscarPorNome(String nome){
+		String jpql = "SELECT p FROM Produto p WHERE p.nome = :nome"; // Observar que o produto e nome se refere a entidade ao atributo e nao a tabela 
+		return em.createQuery(jpql, Produto.class)
+				.setParameter("nome", nome)
+				.getResultList();
+	}
+	
+	public List<Produto> buscarPorNomeDaCategoria(String nome){
+		String jpql = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome"; // Observar que o produto e nome se refere a entidade ao atributo e nao a tabela 
+		return em.createQuery(jpql, Produto.class)
+				.setParameter("nome", nome)
+				.getResultList();
+	}
 
 }
