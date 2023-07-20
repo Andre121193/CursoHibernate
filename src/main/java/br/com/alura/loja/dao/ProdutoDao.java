@@ -52,7 +52,7 @@ public class ProdutoDao {
 	}
 	
 	public BigDecimal buscarPrecoDoProdutoPorNome(String nome){
-		String jpql = "SELECT p.preco FROM Produto p WHERE p.nome = :nome"; // Observar que o produto e nome se refere a entidade ao atributo e nao a tabela 
+		String jpql = "SELECT p.preco FROM Produto p WHERE p.nome = :nome";
 		return em.createQuery(jpql, BigDecimal.class)
 				.setParameter("nome", nome)
 				.getSingleResult();
