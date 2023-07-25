@@ -2,13 +2,13 @@ package br.com.alura.loja.modelo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -26,8 +26,8 @@ public class Pedido {
 	@ManyToOne
 	private Cliente cliente;
 	
-	@OneToMany
-	private List<ItemPedido> itens;
+	@OneToMany(mappedBy = "pedido") // a string que esta sendo passada é o nome do atributo que esta sendo passado na classe itemPedido
+	private List<ItemPedido> itens = new ArrayList<>(); // é bom inicializar a lista vazia para que não seja necessario uma verificação ao rodar o codigo
 
 	public Pedido() {
 		super();
@@ -35,6 +35,12 @@ public class Pedido {
 
 	public Pedido(Cliente cliente) {
 		this.cliente = cliente;
+	}
+	
+	// metodo que adiciona um item a lista, por ser bidirecional se adiciona tanto pela entidade Pedido como pela entidade ItemPedido
+	public void adicionaItem(ItemPedido item) {
+		item.setPedido(this);
+		this.itens.add(item);
 	}
 
 	public int getId() {
