@@ -12,7 +12,7 @@ public class Cliente {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private String nome;
 	private String cpf;
 
@@ -25,7 +25,7 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 

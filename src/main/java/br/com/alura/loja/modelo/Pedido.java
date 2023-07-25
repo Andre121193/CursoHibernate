@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,13 +22,14 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	@Column(name = "valor_total")
 	private BigDecimal valorTotal;
 	private LocalDate dataCadastro = LocalDate.now();
 
 	@ManyToOne
 	private Cliente cliente;
 	
-	@OneToMany(mappedBy = "pedido") // a string que esta sendo passada é o nome do atributo que esta sendo passado na classe itemPedido
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL) // a string que esta sendo passada é o nome do atributo que esta sendo passado na classe itemPedido, o cascade faz com que tudo que é feito com o pedido tambem seja feito com o itemPedido
 	private List<ItemPedido> itens = new ArrayList<>(); // é bom inicializar a lista vazia para que não seja necessario uma verificação ao rodar o codigo
 
 	public Pedido() {
