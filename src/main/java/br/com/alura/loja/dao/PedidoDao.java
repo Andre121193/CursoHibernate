@@ -1,10 +1,12 @@
 package br.com.alura.loja.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
 import br.com.alura.loja.modelo.Pedido;
+import br.com.alura.loja.vo.RelatorioDeVendasVo;
 
 public class PedidoDao {
 	
@@ -24,4 +26,17 @@ public class PedidoDao {
 		return em.createQuery(jpql, BigDecimal.class).
 				getSingleResult(); //o jpql vai ser oq vai ser passado para criar a query e o bigDecimal é o retorno do metodo
 		}
+
+	public List<RelatorioDeVendasVo> relatorioDeVendas() {
+		String jpql = "SELECT new br.com.alura.loja.vo.RelatorioDeVendasVo("
+				+ "produto.nome, "
+				+ "SUM(item.quantidade), "
+				+ "MAX(pedido.dataCadastro)) "
+				+ "FROM Pedido pedido "
+				+ "JOIN pedido.itens item "
+				+ "JOIN item.produto produto "
+				+ "GROUP BY produto.nome "
+				+ "ORDER BY item.quantidade DESC";
+		return em.createQuery(jpql, RelatorioDeVendasVo.class).getResultList();
+	}
 }
