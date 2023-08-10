@@ -8,10 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "produtos")
+// posso criar quantas namedQuery forem necessarias, lembrar que o name deve ser unico
+@NamedQuery(name = "Produto.produtosPorCategoria", 
+query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome")
 public class Produto {
 
 	// para renomear uma coluna no banco usa-se @column(name="")
