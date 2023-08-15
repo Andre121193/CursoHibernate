@@ -23,6 +23,8 @@ public class CadastroDePedido {
 		
 		populaBancoDeDados(); // salvando o produto e a categoria no banco de dados.
 		
+		System.out.println("-------------------------------------------------------fim da população de banco de dados-------------------------------------------------------");
+		
 		// recuperando o produo recem salvo do banco de dados.
 		EntityManager em = JPAUtil.getEntityManager();
 		ProdutoDao produtoDao = new ProdutoDao(em);
@@ -36,15 +38,15 @@ public class CadastroDePedido {
 		em.getTransaction().begin();
 			
 		
-		Pedido pedido = new Pedido(cliente);
-		pedido.adicionaItem(new ItemPedido(10, produto, pedido));
-		pedido.adicionaItem(new ItemPedido(40, produto2, pedido));
+		Pedido pedido1 = new Pedido(cliente);
+		pedido1.adicionaItem(new ItemPedido(10, produto, pedido1));
+		pedido1.adicionaItem(new ItemPedido(40, produto2, pedido1));
 		
 		Pedido pedido2 = new Pedido(cliente);
-		pedido2.adicionaItem(new ItemPedido(2, produto3, pedido));
+		pedido2.adicionaItem(new ItemPedido(2, produto3, pedido1));
 		
 		PedidoDao pedidoDao = new PedidoDao(em);
-		pedidoDao.cadastrar(pedido);
+		pedidoDao.cadastrar(pedido1);
 		pedidoDao.cadastrar(pedido2);
 		
 		em.getTransaction().commit();
@@ -54,6 +56,11 @@ public class CadastroDePedido {
 		
 		List<RelatorioDeVendasVo> relatorio = pedidoDao.relatorioDeVendas();
 		relatorio.forEach(System.out::println);
+		
+		System.out.println("-------------------------------------------------------fim da criação de cadastro de pedidos-------------------------------------------------------");
+		
+		Pedido pedido = em.find(Pedido.class, 1l);
+		System.out.println(pedido.getItens().size());
 
 	}
 	

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,14 +22,17 @@ public class Pedido {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	@Column(name = "valor_total")
 	private BigDecimal valorTotal = BigDecimal.ZERO;
 	private LocalDate dataCadastro = LocalDate.now();
 
-	@ManyToOne
+	// relacionamentos ...ToOne são chamados tambem de Eager, uma estrategia de carregamento da jpa faz com que os Eagers sejam carregados no ato
+	@ManyToOne(fetch = FetchType.LAZY)// é uma boa pratica alterar todos os relacionamentos ToOne(padrao Eager para Lazy)
 	private Cliente cliente;
 	
+	
+	// relacionamentos ...ToMany são chamados tambem de Lazy, uma estrategia de carregamento da jpa faz com que os Lazy sejam carregados quando for preciso
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL) // a string que esta sendo passada é o nome do atributo que esta sendo passado na classe itemPedido, o cascade faz com que tudo que é feito com o pedido tambem seja feito com o itemPedido
 	private List<ItemPedido> itens = new ArrayList<>(); // é bom inicializar a lista vazia para que não seja necessario uma verificação ao rodar o codigo
 
@@ -43,11 +47,11 @@ public class Pedido {
 	// metodo que adiciona um item a lista, por ser bidirecional se adiciona tanto pela entidade Pedido como pela entidade ItemPedido
 	public void adicionaItem(ItemPedido item) {
 		item.setPedido(this);
-		this.itens.add(item);
+		this.getItens().add(item);
 		valorTotal = this.valorTotal.add(item.getValor());
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -73,6 +77,14 @@ public class Pedido {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
+	}
+
+	public List<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<ItemPedido> itens) {
+		this.itens = itens;
 	}
 
 }
