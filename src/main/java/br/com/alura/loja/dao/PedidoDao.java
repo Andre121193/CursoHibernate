@@ -39,4 +39,11 @@ public class PedidoDao {
 				+ "ORDER BY item.quantidade DESC";
 		return em.createQuery(jpql, RelatorioDeVendasVo.class).getResultList();
 	}
+	
+	// a criação de um metodo usando o join fetch é usado para fazer um select após um entityManager ser fechado e quando a entidade for setada como lazy.
+	public Pedido buscarPedidoComCliente(Long id) {
+		return em.createQuery("SELECT p FROM Pedido p JOIN FETCH p.cliente WHERE p.id = :id",Pedido.class)
+				.setParameter("id", id)
+				.getSingleResult();
+	}
 }
