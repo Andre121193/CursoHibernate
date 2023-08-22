@@ -63,9 +63,8 @@ public class CadastroDePedido {
 		System.out.println(pedido.getItens().size());
 		
 		Pedido pedidoJoinFetch = pedidoDao.buscarPedidoComCliente(1l);
-		System.out.println(pedidoJoinFetch.getCliente().getNome());
 		em.close();
-		
+		System.out.println(pedidoJoinFetch.getCliente().getNome());
 
 	}
 	
