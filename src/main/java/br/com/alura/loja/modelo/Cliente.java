@@ -1,5 +1,6 @@
 package br.com.alura.loja.modelo;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,36 +14,31 @@ public class Cliente {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String nome;
-	private String cpf;
+	@Embedded // essa anotação faz com que os atributos da classe dados pessoais sejam considerados na classe cliente mesmo estando em outra classe
+	private DadosPessoais dadosPessoais;
 
 	public Cliente() {
 
 	}
 
 	public Cliente(String nome, String cpf) {
-		this.nome = nome;
-		this.cpf = cpf;
+		this.dadosPessoais = new DadosPessoais(nome, cpf);
+	}
+	
+	public String getCpf() { // metodo delegando a chamada do getCpf para nao estourar erros do código ja existente
+		return this.dadosPessoais.getCpf();
+	}
+	
+	public String getNome() { // metodo delegando a chamada do getNome para nao estourar erros do código ja existente
+		return this.dadosPessoais.getNome();
 	}
 
 	public Long getId() {
 		return id;
 	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	
+	public DadosPessoais getDadosPessoais() {
+		return dadosPessoais;
 	}
 
 }
