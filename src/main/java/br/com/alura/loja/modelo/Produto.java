@@ -8,15 +8,17 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "produtos")
-// posso criar quantas namedQuery forem necessarias, lembrar que o name deve ser unico
 @NamedQuery(name = "Produto.produtosPorCategoria", 
-query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome")
+query = "SELECT p FROM Produto p WHERE p.categoria.nome = :nome") // posso criar quantas namedQuery forem necessarias, lembrar que o name deve ser unico
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)// as classes que extendem a classe produto estarao na mesma tabela no banco sendo mais performatico, pode ser singleTable ou Joined.
 public class Produto {
 
 	// para renomear uma coluna no banco usa-se @column(name="")
